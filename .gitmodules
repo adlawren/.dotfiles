@@ -7,3 +7,6 @@
 [submodule ".qutebrowser"]
 	path = .qutebrowser
 	url = git@github.com:adlawren/.qutebrowser.git
+[submodule ".config/openbox"]
+	path = .config/openbox
+	url = git@github.com:adlawren/openbox-config.git
