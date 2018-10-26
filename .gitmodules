@@ -10,3 +10,6 @@
 [submodule ".config/openbox"]
 	path = .config/openbox
 	url = git@github.com:adlawren/openbox-config.git
+[submodule ".mutt"]
+	path = .mutt
+	url = git@github.com:adlawren/mutt-config.git
