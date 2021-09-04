@@ -4,17 +4,19 @@
 -- - https://github.com/xmonad/xmonad/blob/master/src/XMonad/Config.hs
 -- - https://wiki.haskell.org/Xmonad/General_xmonad.hs_config_tips#Adding_your_own_keybindings
 -- - https://ianyh.com/amethyst/
+-- - https://hackage.haskell.org/package/xmonad-contrib-0.16/docs/XMonad-Config-Desktop.html#g:3
 
 import XMonad
+import XMonad.Config.Gnome
 import XMonad.Hooks.ManageDocks
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 
-main = do
-  xmonad $ docks def
+-- main = xmonad gnomeConfig
+main =
+  xmonad $ gnomeConfig
     { terminal    = myTerminal
     , modMask     = myModMask
-    , startupHook = myStartupHook
     , layoutHook  = avoidStruts $ layoutHook defaultConfig
     , manageHook  = manageHook defaultConfig <+> manageDocks
     --, keys        = \c -> myKeys c `M.union` keys defaultConfig c
@@ -41,10 +43,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
      , ((myModMask1, xK_Return), windows W.swapMaster)
      , ((myModMask1, xK_t), withFocused $ windows . W.sink)
      -- Session management
-     , ((mod1Mask .|. controlMask, xK_l), spawn "xscreensaver-command -lock")
-     , ((mod1Mask .|. controlMask, xK_z), spawn "xscreensaver-command -lock && systemctl suspend")
+     , ((mod1Mask .|. controlMask, xK_l), spawn "gnome-session-quit")
+     , ((mod1Mask .|. controlMask, xK_z), spawn "systemctl suspend")
      -- Application shortcuts
-     , ((mod1Mask, xK_space), spawn "rofi -show run")
+     , ((mod1Mask, xK_space), spawn "dmenu_run")
      ]
      -- Workspace management
      ++
@@ -61,19 +63,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList
                                           >> windows W.shiftMaster)
     ]
 
-myTerminal    = "urxvt"
+myTerminal    = "x-terminal-emulator"
 myModMask     = mod4Mask -- Win key or Super_L
 myModMask1    = myModMask .|. shiftMask -- ... & Shift
 myModMask2    = myModMask1 .|. controlMask -- ... & Control
-
--- TODO: fix; the xmodmap commands aren't working..
-myStartupHook :: X ()
-myStartupHook = do
-                spawn "xscreensaver -no-splash &"
-                spawn "setxkbmap us colemak"
-                spawn "xmodmap -e 'keycode 66 = BackSpace BackSpace BackSpace BackSpace'"
-                spawn "xmodmap -e 'keycode 135 = Super_L NoSymbol Super_L'"
-                spawn "xrdb ~/.Xresources"
-                spawn "feh --bg-scale ~/Wallpapers/Bioshock2.jpg"
-                spawn "workrave &"
-                spawn "polybar main &"
