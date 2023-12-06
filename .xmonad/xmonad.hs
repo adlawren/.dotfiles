@@ -17,9 +17,9 @@ main =
   xmonad $ gnomeConfig
     { terminal    = myTerminal
     , modMask     = myModMask
-    , layoutHook  = avoidStruts $ layoutHook defaultConfig
-    , manageHook  = manageHook defaultConfig <+> manageDocks
-    --, keys        = \c -> myKeys c `M.union` keys defaultConfig c
+    , layoutHook  = avoidStruts $ layoutHook def
+    , manageHook  = manageHook def <+> manageDocks
+    --, keys        = \c -> myKeys c `M.union` keys def c
     , keys = myKeys
     , mouseBindings = myMouseBindings
     }
